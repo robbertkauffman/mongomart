@@ -1,7 +1,7 @@
 self.__precacheManifest = [
   {
-    "revision": "430f8c32779ba9b0fed4",
-    "url": "/mongomart/static/js/main.430f8c32.chunk.js"
+    "revision": "6c308056a3ee8a0021f1",
+    "url": "/mongomart/static/js/main.6c308056.chunk.js"
   },
   {
     "revision": "f9e3e9dfac759db8d2a5",
@@ -12,7 +12,7 @@ self.__precacheManifest = [
     "url": "/mongomart/static/js/2.f14c7552.chunk.js"
   },
   {
-    "revision": "dbd9f23bae061a738f693b7868fad6c7",
+    "revision": "6bad26b1322c7a998b275186e073290d",
     "url": "/mongomart/index.html"
   }
 ];
