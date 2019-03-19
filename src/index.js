@@ -14,7 +14,7 @@ const db = client
   .db('mongomart');
 
 const Routing = () => (
-  <Router>
+  <Router basename={process.env.PUBLIC_URL}>
     <React.Fragment>
       <nav className="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div className="container">
