@@ -33,11 +33,11 @@ const ListReviews = props => {
             <h4 className="media-heading review-header">
               {review.name}
               <small> {dateString}</small>
-              {review.editable && (
+              {/* {review.editable && (
                 <a href="#editReview" className="edit-review">
                   Edit
                 </a>
-              )}
+              )} */}
             </h4>
             <div className="ratings">
               <ProductRating stars={review.stars} />
