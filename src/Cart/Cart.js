@@ -129,7 +129,7 @@ class Cart extends Component {
             </div>
 
             <div className="row">
-              <div className="col-md-12">
+              <div className="col-md-12 checkout">
                 <button className="btn btn-success" type="submit">
                   Proceed to Checkout
                 </button>

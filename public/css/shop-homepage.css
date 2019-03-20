@@ -99,3 +99,8 @@ button.success[disabled] {
 .navbar-form.navbar-right > * {
   margin-left: 5px;
 }
+
+.checkout {
+  padding-right: 30px;
+  text-align: right;
+}
