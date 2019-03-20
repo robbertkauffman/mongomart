@@ -122,7 +122,9 @@ class Cart extends Component {
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
-                    <td>{this.calculateTotal().toFixed(2)}</td>
+                    <td>
+                      <strong>{this.calculateTotal().toFixed(2)}</strong>
+                    </td>
                   </tr>
                 </tbody>
               </table>
