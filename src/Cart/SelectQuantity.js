@@ -1,6 +1,6 @@
 import React from 'react';
 
-const QuantitySelect = props => {
+const SelectQuantity = props => {
   const options = [...Array(26).keys()].map(i => (
     <QuantityOption quantity={i} key={i} />
   ));
@@ -25,4 +25,4 @@ const QuantityOption = props => {
   }
 };
 
-export default QuantitySelect;
+export default SelectQuantity;

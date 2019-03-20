@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import QuantitySelect from './QuantitySelect';
+import SelectQuantity from './SelectQuantity';
 
 const CartItem = props => {
   const item = props.item;
@@ -23,7 +23,7 @@ const CartItem = props => {
         </Link>
       </td>
       <td>
-        <QuantitySelect
+        <SelectQuantity
           selectedQuantity={item.quantity}
           updateQuantity={props.updateQuantity}
           itemId={props.itemId}
