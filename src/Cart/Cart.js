@@ -82,6 +82,13 @@ class Cart extends Component {
     ));
   }
 
+  calculateTotal() {
+    return this.state.cart.items.reduce(
+      (a, b) => a + (b['price'] * b['quantity'] || 0),
+      0
+    );
+  }
+
   render() {
     if (!this.state.cartError) {
       return (
@@ -115,7 +122,7 @@ class Cart extends Component {
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
-                    <td />
+                    <td>{this.calculateTotal().toFixed(2)}</td>
                   </tr>
                 </tbody>
               </table>
