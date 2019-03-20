@@ -95,3 +95,7 @@ footer {
 button.success[disabled] {
   background-color: green;
 }
+
+.navbar-form.navbar-right > * {
+  margin-left: 5px;
+}
