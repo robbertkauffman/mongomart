@@ -12,7 +12,8 @@ class Cart extends Component {
       cart: {
         items: []
       },
-      cartError: undefined
+      cartError: undefined,
+      updateQuantityError: undefined
     };
     this.updateQuantity = this.updateQuantity.bind(this);
   }
@@ -44,7 +45,7 @@ class Cart extends Component {
 
   updateQuantity(itemId, event) {
     if (event && event.target && event.target.value) {
-      const newVal = parseInt(event.target.value);
+      const newQuantity = parseInt(event.target.value);
       this.props.client.auth
         .loginWithCredential(new AnonymousCredential())
         .then(() =>
@@ -53,7 +54,7 @@ class Cart extends Component {
               userId: this.props.client.auth.currentUser.id,
               'items._id': itemId
             },
-            { $set: { 'items.$.quantity': newVal } }
+            { $set: { 'items.$.quantity': newQuantity } }
           )
         )
         .then(response => {
@@ -62,10 +63,21 @@ class Cart extends Component {
             response.modifiedCount &&
             response.modifiedCount === 1
           ) {
-            this.setState({ selectedQuantity: newVal });
+            const updatedCart = this.state.cart;
+            updatedCart.items.forEach(item => {
+              if (item._id === itemId) {
+                item.quantity = newQuantity;
+              }
+            });
+            this.setState({
+              cart: updatedCart,
+              selectedQuantity: newQuantity,
+              updateQuantityError: undefined
+            });
           }
         })
         .catch(err => {
+          this.setState({ updateQuantityError: err });
           console.error(err);
         });
     }
@@ -105,6 +117,13 @@ class Cart extends Component {
           </div>
           <div className="row">
             <div className="col-md-12">
+              {this.state.updateQuantityError && (
+                <Error
+                  message={'Error while updating quantity!'}
+                  error={this.state.updateQuantityError}
+                  display={'small'}
+                />
+              )}
               <table className="table table-bordered table-striped">
                 <thead>
                   <tr>
@@ -141,7 +160,12 @@ class Cart extends Component {
         </React.Fragment>
       );
     } else {
-      return <Error error={this.state.cartError} />;
+      return (
+        <Error
+          message={'Error while retrieving cart!'}
+          error={this.state.cartError}
+        />
+      );
     }
   }
 }
