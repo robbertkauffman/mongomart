@@ -44,7 +44,7 @@ class Cart extends Component {
 
   updateQuantity(itemId, event) {
     if (event && event.target && event.target.value) {
-      const newVal = event.target.value;
+      const newVal = parseInt(event.target.value);
       this.props.client.auth
         .loginWithCredential(new AnonymousCredential())
         .then(() =>
