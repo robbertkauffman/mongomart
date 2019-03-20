@@ -3,7 +3,7 @@ import { AnonymousCredential } from 'mongodb-stitch-browser-sdk';
 
 import Error from '../Error';
 
-export default class Inventory extends Component {
+export default class AddToCart extends Component {
   constructor(props) {
     super(props);
     this.addToCart = this.addToCart.bind(this);

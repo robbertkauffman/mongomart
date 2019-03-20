@@ -6,7 +6,7 @@ import {
 } from 'mongodb-stitch-browser-sdk';
 
 import Error from '../Error';
-import Inventory from './Inventory';
+import AddToCart from './AddToCart';
 import ListReviews from '../Reviews/ListReviews';
 import AddReview from '../Reviews/AddReview';
 import ProductRating from '../ProductRating/ProductRating';
@@ -168,7 +168,7 @@ export default class ProductItemDetail extends Component {
 
               <p>{item.description}</p>
 
-              <Inventory
+              <AddToCart
                 item={item}
                 db={this.props.db}
                 client={this.props.client}
