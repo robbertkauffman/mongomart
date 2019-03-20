@@ -47,7 +47,7 @@ const Routing = () => (
                 role="search"
                 action="/search"
               >
-                <div className="form-group">
+                {/* <div className="form-group">
                   <input
                     type="text"
                     className="form-control"
@@ -57,7 +57,7 @@ const Routing = () => (
                 </div>
                 <button type="submit" className="btn btn-default">
                   Submit
-                </button>
+                </button> */}
                 <Link to="/cart">
                   <button type="button" className="btn btn-success">
                     <span
