@@ -104,3 +104,8 @@ button.success[disabled] {
   padding-right: 30px;
   text-align: right;
 }
+
+.error-small {
+  margin-top: 10px;
+  padding: 10px;
+}
