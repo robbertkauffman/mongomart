@@ -99,8 +99,8 @@ export default class Inventory extends Component {
   render() {
     const item = this.props.item;
     if (item.stock > 0) {
-      if (!this.state.addToCartError) {
-        return (
+      return (
+        <React.Fragment>
           <button
             className="btn btn-primary"
             type="submit"
@@ -110,15 +110,13 @@ export default class Inventory extends Component {
             Add to cart
             <span className="glyphicon glyphicon-chevron-right" />
           </button>
-        );
-      } else {
-        return (
           <Error
             message={'Error while adding to cart!'}
             error={this.state.addToCartError}
+            display={'small'}
           />
-        );
-      }
+        </React.Fragment>
+      );
     } else {
       return (
         <React.Fragment>

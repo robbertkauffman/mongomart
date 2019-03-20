@@ -4,6 +4,8 @@ import {
   RemoteMongoClient
 } from 'mongodb-stitch-browser-sdk';
 
+import Error from '../Error';
+
 export default class AddReview extends Component {
   constructor(props) {
     super(props);
@@ -140,6 +142,13 @@ export default class AddReview extends Component {
         >
           Submit Review
         </button>
+        {this.state.addReviewError && (
+          <Error
+            message={'Error while adding review!'}
+            error={this.state.addReviewError}
+            display={'small'}
+          />
+        )}
       </div>
     );
   }
