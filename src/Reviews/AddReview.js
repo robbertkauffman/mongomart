@@ -8,22 +8,14 @@ export default class AddReview extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isWritingReview: false,
       rating: 5,
       comment: '',
       addReviewError: undefined
     };
 
-    this.toggleWriteReview = this.toggleWriteReview.bind(this);
     this.handleRatingChange = this.handleRatingChange.bind(this);
     this.handleCommentChange = this.handleCommentChange.bind(this);
     this.addReview = this.addReview.bind(this);
-  }
-
-  toggleWriteReview() {
-    this.setState({
-      isWritingReview: !this.state.isWritingReview
-    });
   }
 
   handleRatingChange(event) {
@@ -62,59 +54,79 @@ export default class AddReview extends Component {
   }
 
   render() {
-    if (!this.state.isWritingReview) {
-      return (
-        <button type="button" onClick={this.toggleWriteReview}>
-          Add review
-        </button>
-      );
-    } else {
-      return (
-        <div className="new-review">
-          <button
-            type="button"
-            onClick={this.toggleWriteReview}
-            className="cancel-new-review"
-          >
-            Cancel
-          </button>
-          <p>
-            <label>
-              Rating:
-              <select
-                defaultValue={5}
-                name="rating"
-                className="new-review-rating"
-                value={this.state.value}
-                onChange={this.handleRatingChange}
-              >
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-              </select>
-            </label>
-          </p>
-          <p>
+    return (
+      <div className="well add-review">
+        <h4>Add a Review:</h4>
+        <div className="form-group">
+          <label className="expand">
+            Review:
             <textarea
-              rows="1"
-              cols="50"
-              name="comment"
+              name="review"
+              class="form-control"
+              rows="3"
               placeholder="Your comment..."
               value={this.state.comment}
               onChange={this.handleCommentChange}
             />
-          </p>
-          <button
-            type="button"
-            onClick={this.addReview}
-            className="add-new-review"
-          >
-            Add Review
-          </button>
+          </label>
         </div>
-      );
-    }
+        <div className="form-group">
+          <label className="radio-inline">
+            <input
+              type="radio"
+              name="stars"
+              id="stars"
+              value="1"
+              onChange={this.handleRatingChange}
+            />{' '}
+            1 star
+          </label>
+          <label className="radio-inline">
+            <input
+              type="radio"
+              name="stars"
+              id="stars"
+              value="2"
+              onChange={this.handleRatingChange}
+            />{' '}
+            2 star
+          </label>
+          <label className="radio-inline">
+            <input
+              type="radio"
+              name="stars"
+              id="stars"
+              value="3"
+              onChange={this.handleRatingChange}
+            />{' '}
+            3 star
+          </label>
+          <label className="radio-inline">
+            <input
+              type="radio"
+              name="stars"
+              id="stars"
+              value="4"
+              onChange={this.handleRatingChange}
+            />{' '}
+            4 star
+          </label>
+          <label className="radio-inline">
+            <input
+              type="radio"
+              name="stars"
+              id="stars"
+              value="5"
+              onChange={this.handleRatingChange}
+              checked
+            />{' '}
+            5 star
+          </label>
+        </div>
+        <button type="submit" class="btn btn-primary" onClick={this.addReview}>
+          Submit Review
+        </button>
+      </div>
+    );
   }
 }

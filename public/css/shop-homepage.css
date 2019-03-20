@@ -82,23 +82,16 @@ footer {
   margin-bottom: 10px;
 }
 
-.review-header {
-}
-
 .edit-review {
   margin-left: 10px;
   color: #d17581;
   font-size: 75%;
 }
 
-.new-review-rating {
-  margin-left: 10px;
+.add-review label.expand {
+  width: 100%;
 }
 
-.new-review button {
-  margin-right: 10px;
-  margin-bottom: 10px;
-}
-
-.cancel-new-review {
+button.success[disabled] {
+  background-color: green;
 }
