@@ -31,7 +31,7 @@ const CartItem = props => {
         />
       </td>
       <td>{item.price}</td>
-      <td>{item.price * item.quantity}</td>
+      <td>{(item.price * item.quantity).toFixed(2)}</td>
     </tr>
   );
 };
