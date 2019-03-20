@@ -62,7 +62,7 @@ export default class AddReview extends Component {
             Review:
             <textarea
               name="review"
-              class="form-control"
+              className="form-control"
               rows="3"
               placeholder="Your comment..."
               value={this.state.comment}
@@ -123,7 +123,11 @@ export default class AddReview extends Component {
             5 star
           </label>
         </div>
-        <button type="submit" class="btn btn-primary" onClick={this.addReview}>
+        <button
+          type="submit"
+          className="btn btn-primary"
+          onClick={this.addReview}
+        >
           Submit Review
         </button>
       </div>
