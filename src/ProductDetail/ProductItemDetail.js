@@ -20,6 +20,7 @@ export default class ProductItemDetail extends Component {
       productError: undefined,
       reviewsError: undefined
     };
+    this.handleAddReview = this.handleAddReview.bind(this);
   }
 
   componentDidMount() {
@@ -82,6 +83,12 @@ export default class ProductItemDetail extends Component {
         });
         console.error(err);
       });
+  }
+
+  handleAddReview(review) {
+    let updatedReviews = this.state.reviews;
+    updatedReviews.push(review);
+    this.setState({ reviews: updatedReviews });
   }
 
   render() {
@@ -190,6 +197,7 @@ export default class ProductItemDetail extends Component {
             <AddReview
               client={this.props.client}
               productId={this.state.item._id}
+              onAddReview={this.handleAddReview}
             />
           </div>
         </div>

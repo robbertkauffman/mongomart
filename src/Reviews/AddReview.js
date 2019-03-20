@@ -46,11 +46,20 @@ export default class AddReview extends Component {
       .then(() => reviewsDb.collection('reviews').insertOne(review))
       .then(response => {
         this.setState({ addReviewError: null, isWritingReview: false });
+        this.props.onAddReview(review);
+        this.disableAddReviewButton();
       })
       .catch(err => {
         this.setState({ addReviewError: err });
         console.error(err);
       });
+  }
+
+  disableAddReviewButton() {
+    this.refs.addReviewButton.setAttribute('disabled', '');
+    this.refs.addReviewButton.textContent = 'Added review';
+    this.refs.addReviewButton.className =
+      this.refs.addReviewButton.className + ' success';
   }
 
   render() {
@@ -126,6 +135,7 @@ export default class AddReview extends Component {
         <button
           type="submit"
           className="btn btn-primary"
+          ref="addReviewButton"
           onClick={this.addReview}
         >
           Submit Review
