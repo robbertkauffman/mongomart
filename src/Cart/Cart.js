@@ -46,41 +46,82 @@ class Cart extends Component {
   updateQuantity(itemId, event) {
     if (event && event.target && event.target.value) {
       const newQuantity = parseInt(event.target.value);
-      this.props.client.auth
-        .loginWithCredential(new AnonymousCredential())
-        .then(() =>
-          this.props.db.collection('cart').updateOne(
-            {
-              userId: this.props.client.auth.currentUser.id,
-              'items._id': itemId
-            },
-            { $set: { 'items.$.quantity': newQuantity } }
-          )
-        )
-        .then(response => {
-          if (
-            response &&
-            response.modifiedCount &&
-            response.modifiedCount === 1
-          ) {
-            const updatedCart = this.state.cart;
-            updatedCart.items.forEach(item => {
-              if (item._id === itemId) {
-                item.quantity = newQuantity;
-              }
-            });
-            this.setState({
-              cart: updatedCart,
-              selectedQuantity: newQuantity,
-              updateQuantityError: undefined
-            });
-          }
-        })
-        .catch(err => {
-          this.setState({ updateQuantityError: err });
-          console.error(err);
-        });
+      if (newQuantity === 0) {
+        this.removeCartItem(itemId);
+      } else {
+        this.updateCartQuantity(itemId, newQuantity);
+      }
     }
+  }
+
+  removeCartItem(itemId) {
+    this.props.client.auth
+      .loginWithCredential(new AnonymousCredential())
+      .then(() =>
+        this.props.db.collection('cart').updateOne(
+          {
+            userId: this.props.client.auth.currentUser.id
+          },
+          { $pull: { items: { _id: itemId } } }
+        )
+      )
+      .then(response => {
+        if (
+          response &&
+          response.modifiedCount &&
+          response.modifiedCount === 1
+        ) {
+          const updatedCart = this.state.cart;
+          updatedCart.items = updatedCart.items.filter(
+            item => item._id !== itemId
+          );
+          this.setState({
+            cart: updatedCart,
+            updateQuantityError: undefined
+          });
+        }
+      })
+      .catch(err => {
+        this.setState({ updateQuantityError: err });
+        console.error(err);
+      });
+  }
+
+  updateCartQuantity(itemId, newQuantity) {
+    this.props.client.auth
+      .loginWithCredential(new AnonymousCredential())
+      .then(() =>
+        this.props.db.collection('cart').updateOne(
+          {
+            userId: this.props.client.auth.currentUser.id,
+            'items._id': itemId
+          },
+          { $set: { 'items.$.quantity': newQuantity } }
+        )
+      )
+      .then(response => {
+        if (
+          response &&
+          response.modifiedCount &&
+          response.modifiedCount === 1
+        ) {
+          const updatedCart = this.state.cart;
+          updatedCart.items.forEach(item => {
+            if (item._id === itemId) {
+              item.quantity = newQuantity;
+            }
+          });
+          this.setState({
+            cart: updatedCart,
+            selectedQuantity: newQuantity,
+            updateQuantityError: undefined
+          });
+        }
+      })
+      .catch(err => {
+        this.setState({ updateQuantityError: err });
+        console.error(err);
+      });
   }
 
   renderCart() {
