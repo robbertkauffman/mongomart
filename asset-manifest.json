@@ -1,11 +1,11 @@
 {
-  "main.js": "/mongomart/static/js/main.6c308056.chunk.js",
-  "main.js.map": "/mongomart/static/js/main.6c308056.chunk.js.map",
+  "main.js": "/mongomart/static/js/main.278d3f4b.chunk.js",
+  "main.js.map": "/mongomart/static/js/main.278d3f4b.chunk.js.map",
   "runtime~main.js": "/mongomart/static/js/runtime~main.f9e3e9df.js",
   "runtime~main.js.map": "/mongomart/static/js/runtime~main.f9e3e9df.js.map",
   "static/js/2.f14c7552.chunk.js": "/mongomart/static/js/2.f14c7552.chunk.js",
   "static/js/2.f14c7552.chunk.js.map": "/mongomart/static/js/2.f14c7552.chunk.js.map",
   "index.html": "/mongomart/index.html",
-  "precache-manifest.90fa242ea6ba632de4e9719ad2d1bf53.js": "/mongomart/precache-manifest.90fa242ea6ba632de4e9719ad2d1bf53.js",
+  "precache-manifest.d9817b4c4c7219db1674ca6aed439632.js": "/mongomart/precache-manifest.d9817b4c4c7219db1674ca6aed439632.js",
   "service-worker.js": "/mongomart/service-worker.js"
 }
