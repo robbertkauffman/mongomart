@@ -108,7 +108,12 @@ class Home extends Component {
         <Category category={category} key={category._id} />
       ));
     } else {
-      return <Error error={this.state.categoriesError} />;
+      return (
+        <Error
+          message={'Error while retrieving categories!'}
+          error={this.state.categoriesError}
+        />
+      );
     }
   }
 
@@ -125,7 +130,12 @@ class Home extends Component {
         return null;
       });
     } else {
-      return <Error error={this.state.productsError} />;
+      return (
+        <Error
+          message={'Error while retrieving products!'}
+          error={this.state.productsError}
+        />
+      );
     }
   }
 

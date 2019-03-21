@@ -178,7 +178,12 @@ export default class ProductItemDetail extends Component {
         </React.Fragment>
       );
     } else {
-      return <Error error={this.state.productError} />;
+      return (
+        <Error
+          message={'Error while retrieving product!'}
+          error={this.state.productError}
+        />
+      );
     }
   }
 
