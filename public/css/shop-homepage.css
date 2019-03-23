@@ -109,3 +109,8 @@ button.success[disabled] {
   margin-top: 10px;
   padding: 10px;
 }
+
+img.product {
+  max-height: 253px;
+  margin: 0 auto;
+}

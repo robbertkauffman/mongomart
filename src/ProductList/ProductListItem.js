@@ -17,7 +17,7 @@ export default function ProductItem(props) {
         <div className="col-md-7">
           <Link to={item_link}>
             {item.img_url && (
-              <img className="img-responsive" src={img_url} alt="" />
+              <img className="img-responsive product" src={img_url} alt="" />
             )}
           </Link>
         </div>

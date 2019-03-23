@@ -153,7 +153,7 @@ export default class ProductItemDetail extends Component {
           </div>
           <div className="row">
             <div className="col-md-8">
-              <img className="img-responsive" src={img_url} alt="" />
+              <img className="img-responsive product" src={img_url} alt="" />
             </div>
 
             <div className="col-md-4">
