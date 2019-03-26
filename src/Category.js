@@ -16,7 +16,7 @@ export default function Category(props) {
       className="list-group-item"
       activeClassName="active"
     >
-      <span className="badge">{category.num}</span>
+      {category.num && <span className="badge">{category.num}</span>}
       {category._id}
     </NavLink>
   );

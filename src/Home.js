@@ -49,7 +49,7 @@ class Home extends Component {
       .then(categories => {
         var category = {
           _id: 'All',
-          num: 23
+          num: ''
         };
         categories.unshift(category);
 
