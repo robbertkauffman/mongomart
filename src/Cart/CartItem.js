@@ -27,7 +27,7 @@ const CartItem = props => {
           selectedQuantity={item.quantity}
           updateQuantity={props.updateQuantity}
           itemId={props.itemId}
-          userId={props.userId}
+          userid={props.userid}
         />
       </td>
       <td>{item.price}</td>

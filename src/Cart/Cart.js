@@ -24,7 +24,7 @@ class Cart extends Component {
       .then(() =>
         this.props.db
           .collection('cart')
-          .find({ userId: this.props.client.auth.currentUser.id })
+          .find({ userid: this.props.client.auth.currentUser.id })
           .first()
       )
       .then(cart => {
@@ -60,7 +60,7 @@ class Cart extends Component {
       .then(() =>
         this.props.db.collection('cart').updateOne(
           {
-            userId: this.props.client.auth.currentUser.id
+            userid: this.props.client.auth.currentUser.id
           },
           { $pull: { items: { _id: itemId } } }
         )
@@ -93,7 +93,7 @@ class Cart extends Component {
       .then(() =>
         this.props.db.collection('cart').updateOne(
           {
-            userId: this.props.client.auth.currentUser.id,
+            userid: this.props.client.auth.currentUser.id,
             'items._id': itemId
           },
           { $set: { 'items.$.quantity': newQuantity } }
@@ -128,7 +128,7 @@ class Cart extends Component {
     return this.state.cart.items.map(item => (
       <CartItem
         item={item}
-        userId={this.state.userId}
+        userid={this.state.userid}
         updateQuantity={e => this.updateQuantity(item._id, e)}
         key={item._id}
       />

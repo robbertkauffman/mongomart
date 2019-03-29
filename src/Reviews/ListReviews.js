@@ -22,7 +22,7 @@ const ListReviews = props => {
       ':' +
       ('0' + date.getUTCSeconds()).slice(-2);
 
-    if (review.userId && review.userId === props.client.auth.currentUser.id) {
+    if (review.userid && review.userid === props.client.auth.currentUser.id) {
       review.editable = true;
     }
 

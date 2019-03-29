@@ -36,7 +36,7 @@ export default class AddReview extends Component {
 
   addReview() {
     const review = {
-      userId: this.props.client.auth.currentUser.id,
+      userid: this.props.client.auth.currentUser.id,
       productId: this.props.productId,
       // name: this.props.client.auth.currentUser.name
       // ? this.props.client.auth.currentUser.name

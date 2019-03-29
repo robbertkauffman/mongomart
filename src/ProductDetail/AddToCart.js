@@ -23,7 +23,7 @@ export default class AddToCart extends Component {
     // first try to increment quantity of item in cart,
     // if fails, add item to cart or create cart (upsert)
     let incQuery = {
-      userId: this.props.client.auth.currentUser.id,
+      userid: this.props.client.auth.currentUser.id,
       'items._id': this.props.item._id
     };
     const incUpdate = { $inc: { 'items.$.quantity': 1 } };
@@ -49,7 +49,7 @@ export default class AddToCart extends Component {
   }
 
   createCartOrCartItem() {
-    let addQuery = { userId: this.props.client.auth.currentUser.id };
+    let addQuery = { userid: this.props.client.auth.currentUser.id };
     let addItem = this.props.item;
     addItem.quantity = 1;
     const addUpdate = { $addToSet: { items: addItem } };
@@ -83,7 +83,7 @@ export default class AddToCart extends Component {
   setNotification() {
     // const notificationDocument = {
     //   itemId: this.state.item._id,
-    //   userId: this.props.client.auth.currentUser.id,
+    //   userid: this.props.client.auth.currentUser.id,
     //   email: this.props.client.auth.currentUser.profile.email
     // };
     // console.log(notificationDocument);
