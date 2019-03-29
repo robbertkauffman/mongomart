@@ -5,10 +5,13 @@ import { Stitch, RemoteMongoClient } from 'mongodb-stitch-browser-sdk';
 
 import Cart from './Cart/Cart';
 import Home from './Home';
-import Login from './Login';
+// import Login from './Login';
 import ProductItemDetail from './ProductDetail/ProductItemDetail';
 
-const client = Stitch.initializeDefaultAppClient('mongomart-vyoeg');
+// replace Stitch App ID in the next line
+const stitchAppId = 'mongomart-vyoeg';
+// const stitchAppId = window.location.hostname.split('.')[0];
+const client = Stitch.initializeDefaultAppClient(stitchAppId);
 const db = client
   .getServiceClient(RemoteMongoClient.factory, 'mm-products')
   .db('mongomart');
@@ -38,9 +41,9 @@ const Routing = () => (
             className="collapse navbar-collapse"
             id="bs-example-navbar-collapse-1"
           >
-            <ul className="nav navbar-nav">
+            {/* <ul className="nav navbar-nav">
               <Login client={client} />
-            </ul>
+            </ul> */}
             <div className="collapse navbar-collapse">
               <form
                 className="navbar-form navbar-right"
