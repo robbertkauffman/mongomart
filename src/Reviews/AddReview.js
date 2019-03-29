@@ -11,17 +11,23 @@ export default class AddReview extends Component {
     super(props);
     this.state = {
       rating: 5,
+      name: '',
       comment: '',
       addReviewError: undefined
     };
 
     this.handleRatingChange = this.handleRatingChange.bind(this);
+    this.handleNameChange = this.handleNameChange.bind(this);
     this.handleCommentChange = this.handleCommentChange.bind(this);
     this.addReview = this.addReview.bind(this);
   }
 
   handleRatingChange(event) {
     this.setState({ rating: event.target.value });
+  }
+
+  handleNameChange(event) {
+    this.setState({ name: event.target.value });
   }
 
   handleCommentChange(event) {
@@ -32,9 +38,10 @@ export default class AddReview extends Component {
     const review = {
       userId: this.props.client.auth.currentUser.id,
       productId: this.props.productId,
-      name: this.props.client.auth.currentUser.name
-        ? this.props.client.auth.currentUser.name
-        : 'Anonymous User',
+      // name: this.props.client.auth.currentUser.name
+      // ? this.props.client.auth.currentUser.name
+      // : 'Anonymous User',
+      name: this.state.name,
       comment: this.state.comment,
       stars: this.state.rating,
       date: new Date().getTime()
@@ -78,6 +85,20 @@ export default class AddReview extends Component {
               placeholder="Your comment..."
               value={this.state.comment}
               onChange={this.handleCommentChange}
+            />
+          </label>
+        </div>
+        <div className="form-group">
+          <label>
+            Name:
+            <input
+              type="text"
+              className="form-control"
+              id="name"
+              name="name"
+              placeholder="Enter display name"
+              value={this.state.name}
+              onChange={this.handleNameChange}
             />
           </label>
         </div>
