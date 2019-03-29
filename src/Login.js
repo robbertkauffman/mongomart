@@ -8,15 +8,6 @@ export default class Login extends Component {
       loggedIn: false,
       userName: 'Unnamed user'
     };
-    // this.state = {
-    //   auth: {
-    //     id: 0,
-    //     profile: {
-    //       name: "John Doe"
-    //     }
-    //   },
-    //   loggedIn: this.props.client.auth.isLoggedIn
-    // };
 
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
@@ -35,21 +26,7 @@ export default class Login extends Component {
       });
     }
     if (this.props.client.auth.isLoggedIn) {
-      // console.log(this.props.client);
     }
-    // if (this.state.isLoggedIn) {
-    //   this.setState(state => ({
-    //     auth: {
-    //       id: "5c6dc85f3e1e1e27a8131855",
-    //       profile: {
-    //         email: "robbert.kauffman@mongodb.com",
-    //         firstName: "Robbert",
-    //         lastName: "Kauffman",
-    //         name: "Robbert Kauffman",
-    //       }
-    //     }
-    //   }));
-    // }
   }
 
   login(e) {
@@ -57,21 +34,12 @@ export default class Login extends Component {
     if (!this.props.client.auth.isLoggedIn) {
       const credential = new GoogleRedirectCredential();
       this.props.client.auth.loginWithRedirect(credential);
-      // this.props.client.auth.isLoggedIn = true;
     }
-    // e.preventDefault();
-    // if (!this.state.isLoggedIn) {
-    //   this.setState(state => ({
-    //     isLoggedIn: true
-    //   }));
-    // }
   }
 
   logout(e) {
     e.preventDefault();
     if (this.props.client.auth.isLoggedIn) {
-      // const credential = new GoogleRedirectCredential();
-      // this.props.client.auth.loginWithRedirect(credential);
       this.props.client.auth.logout().then(response => {
         console.log(response);
         if (response) {
@@ -81,25 +49,16 @@ export default class Login extends Component {
           });
         }
       });
-      // this.props.client.auth.isLoggedIn = true;
     }
-    // e.preventDefault();
-    // if (this.state.isLoggedIn) {
-    //   this.setState(state => ({
-    //     isLoggedIn: false
-    //   }));
-    // }
   }
 
   render() {
     const isLoggedIn = this.props.client.auth.isLoggedIn;
-    // const isLoggedIn = this.state.isLoggedIn;
 
     if (isLoggedIn) {
       const name = this.props.client.auth.profile
         ? this.props.client.auth.profile.name
         : 'Unnamed user';
-      // const name = this.state.auth.profile.name;
 
       return (
         <React.Fragment>
