@@ -9,8 +9,7 @@ import Home from './Home';
 import ProductItemDetail from './ProductDetail/ProductItemDetail';
 
 // replace Stitch App ID in the next line
-const stitchAppId = 'mongomart-vyoeg';
-// const stitchAppId = window.location.hostname.split('.')[0];
+const stitchAppId = 'YOUR_STITCH_APP_ID';
 const client = Stitch.initializeDefaultAppClient(stitchAppId);
 const db = client
   .getServiceClient(RemoteMongoClient.factory, 'mm-products')
