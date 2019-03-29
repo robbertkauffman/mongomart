@@ -1,0 +1,6 @@
+{"_id":{"$oid":"5c894d218c7d0481095224e5"},"productId":4.0,"name":"Shannon","comment":"This is so warm and comfortable.","stars":2.0,"date":1.455800194995e+12}
+{"_id":{"$oid":"5c894d218c7d0481095224e6"},"productId":4.0,"name":"Bob","comment":"Love this.","stars":5.0,"date":1.455804800769e+12}
+{"_id":{"$oid":"5c894d218c7d0481095224e7"},"productId":4.0,"name":"Jorge","comment":"Brown. It's brown.","stars":4.0,"date":1.455804825509e+12}
+{"_id":{"$oid":"5c894d218c7d0481095224e8"},"productId":13.0,"name":"Ringo","comment":"He's very green.","stars":4.0,"date":1.45580490225e+12}
+{"_id":{"$oid":"5c894d218c7d0481095224e9"},"productId":15.0,"name":"Horatio","comment":"This is a pretty good book","stars":4.0,"date":1.456086633854e+12}
+{"_id":{"$oid":"5c894d218c7d0481095224ea"},"productId":17.0,"name":"Donald Trump","comment":"This is the best umbrella you will ever use.","stars":5.0,"date":1.456270097364e+12}
