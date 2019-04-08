@@ -31,7 +31,7 @@ export default class Login extends Component {
 
   login(e) {
     e.preventDefault();
-    if (!this.props.client.auth.isLoggedIn) {
+    if (!this.state.isLoggedIn) {
       const credential = new GoogleRedirectCredential();
       this.props.client.auth.loginWithRedirect(credential);
     }
@@ -39,7 +39,7 @@ export default class Login extends Component {
 
   logout(e) {
     e.preventDefault();
-    if (this.props.client.auth.isLoggedIn) {
+    if (this.state.isLoggedIn) {
       this.props.client.auth.logout().then(response => {
         console.log(response);
         if (response) {
@@ -53,7 +53,8 @@ export default class Login extends Component {
   }
 
   render() {
-    const isLoggedIn = this.props.client.auth.isLoggedIn;
+    // const isLoggedIn = this.props.client.auth.isLoggedIn;
+    const isLoggedIn = this.state.isLoggedIn;
 
     if (isLoggedIn) {
       const name = this.props.client.auth.profile
