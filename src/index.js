@@ -5,7 +5,7 @@ import { Stitch, RemoteMongoClient } from 'mongodb-stitch-browser-sdk';
 
 import Cart from './Cart/Cart';
 import Home from './Home';
-// import Login from './Login';
+import Login from './Login';
 import ProductItemDetail from './ProductDetail/ProductItemDetail';
 
 // replace Stitch App ID in the next line
@@ -40,9 +40,9 @@ const Routing = () => (
             className="collapse navbar-collapse"
             id="bs-example-navbar-collapse-1"
           >
-            {/* <ul className="nav navbar-nav">
+            <ul className="nav navbar-nav">
               <Login client={client} />
-            </ul> */}
+            </ul>
             <div className="collapse navbar-collapse">
               <form
                 className="navbar-form navbar-right"
