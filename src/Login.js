@@ -17,15 +17,14 @@ export default class Login extends Component {
     if (this.props.client.auth.hasRedirectResult()) {
       this.props.client.auth.handleRedirectResult().then(user => {
         console.log(user);
+        console.log(user.profile.name);
         if (user) {
           this.setState({
             isLoggedIn: true,
-            name: user.name
+            userName: user.profile.name
           });
         }
       });
-    }
-    if (this.props.client.auth.isLoggedIn) {
     }
   }
 
@@ -41,11 +40,10 @@ export default class Login extends Component {
     e.preventDefault();
     if (this.state.isLoggedIn) {
       this.props.client.auth.logout().then(response => {
-        console.log(response);
         if (response) {
           this.setState({
             isLoggedIn: false,
-            name: ''
+            userName: 'Unnamed User'
           });
         }
       });
@@ -53,19 +51,12 @@ export default class Login extends Component {
   }
 
   render() {
-    // const isLoggedIn = this.props.client.auth.isLoggedIn;
-    const isLoggedIn = this.state.isLoggedIn;
-
-    if (isLoggedIn) {
-      const name = this.props.client.auth.profile
-        ? this.props.client.auth.profile.name
-        : 'Unnamed user';
-
+    if (this.state.isLoggedIn) {
       return (
         <React.Fragment>
           <li>
             <a href="#no-link" className="no-link">
-              Welcome, {name}
+              Welcome, {this.state.userName}
             </a>
           </li>
           <li>
