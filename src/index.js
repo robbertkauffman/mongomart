@@ -15,6 +15,11 @@ const db = client
   .getServiceClient(RemoteMongoClient.factory, 'mm-products')
   .db('mongomart');
 
+let homeUrl = '/';
+const homeCallback = (node, homeUrl) => {
+  homeUrl = node.getAttribute('href');
+};
+
 const Routing = () => (
   <Router basename={process.env.PUBLIC_URL}>
     <React.Fragment>
@@ -32,7 +37,7 @@ const Routing = () => (
               <span className="icon-bar" />
               <span className="icon-bar" />
             </button>
-            <Link className="navbar-brand" to="/">
+            <Link className="navbar-brand" to="/" innerRef={homeCallback}>
               MongoMart
             </Link>
           </div>
@@ -41,7 +46,7 @@ const Routing = () => (
             id="bs-example-navbar-collapse-1"
           >
             <ul className="nav navbar-nav">
-              <Login client={client} />
+              <Login client={client} homeUrl={homeUrl} />
             </ul>
             <div className="collapse navbar-collapse">
               <form

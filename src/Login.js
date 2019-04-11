@@ -16,8 +16,6 @@ export default class Login extends Component {
   componentDidMount() {
     if (this.props.client.auth.hasRedirectResult()) {
       this.props.client.auth.handleRedirectResult().then(user => {
-        console.log(user);
-        console.log(user.profile.name);
         if (user) {
           this.setState({
             isLoggedIn: true,
@@ -31,7 +29,9 @@ export default class Login extends Component {
   login(e) {
     e.preventDefault();
     if (!this.state.isLoggedIn) {
-      const credential = new GoogleRedirectCredential();
+      const credential = new GoogleRedirectCredential(
+        window.location.origin + this.props.homeUrl
+      );
       this.props.client.auth.loginWithRedirect(credential);
     }
   }
