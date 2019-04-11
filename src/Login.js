@@ -6,7 +6,7 @@ export default class Login extends Component {
     super(props);
     this.state = {
       loggedIn: false,
-      userName: 'Unnamed user'
+      userName: undefined
     };
 
     this.login = this.login.bind(this);
@@ -21,6 +21,10 @@ export default class Login extends Component {
             isLoggedIn: true,
             userName: user.profile.name
           });
+          // add ID to profile for when creating notifications
+          const profile = user.profile;
+          profile.id = user.id;
+          this.props.handleUpdateProfile(profile);
         }
       });
     }
@@ -43,8 +47,9 @@ export default class Login extends Component {
         if (response) {
           this.setState({
             isLoggedIn: false,
-            userName: 'Unnamed User'
+            userName: undefined
           });
+          this.props.handleUpdateProfile({});
         }
       });
     }

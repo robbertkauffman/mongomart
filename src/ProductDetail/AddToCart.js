@@ -2,15 +2,18 @@ import React, { Component } from 'react';
 import { AnonymousCredential } from 'mongodb-stitch-browser-sdk';
 
 import Error from '../Error';
+import NotifyMeButton from './NotifyMeButton';
+import UserContext from '../UserContext';
 
 export default class AddToCart extends Component {
   constructor(props) {
     super(props);
-    this.addToCart = this.addToCart.bind(this);
     this.state = {
-      addToCartError: undefined
+      addToCartError: undefined,
+      setNotificationError: undefined
     };
-    // this.setNotification = this.setNotification.bind(this);
+    this.addToCart = this.addToCart.bind(this);
+    this.handleSetNotification = this.handleSetNotification.bind(this);
   }
 
   componentDidMount() {}
@@ -60,7 +63,7 @@ export default class AddToCart extends Component {
       .then(() =>
         this.props.db.collection('cart').updateOne(addQuery, addUpdate, options)
       )
-      .then(response => {
+      .then(() => {
         this.onAddToCartSuccess();
       })
       .catch(err => {
@@ -80,20 +83,32 @@ export default class AddToCart extends Component {
     this.setState({ addToCartError: err });
   }
 
-  setNotification() {
-    // const notificationDocument = {
-    //   itemId: this.state.item._id,
-    //   userid: this.props.client.auth.currentUser.id,
-    //   email: this.props.client.auth.currentUser.profile.email
-    // };
-    // console.log(notificationDocument);
-    // this.props.client.auth.loginWithCredential(new AnonymousCredential()).then(() =>
-    //   this.props.db.collection('notify').insertOne(notificationDocument)
-    // ).then(response => {
-    //   console.log(response);
-    // }).catch(err => {
-    //   console.error(err);
-    // });
+  handleSetNotification(profile) {
+    console.log(profile);
+    const notificationDocument = {
+      itemId: this.props.item._id,
+      userid: profile.id,
+      email: profile.email
+    };
+    this.props.client.auth
+      .loginWithCredential(new AnonymousCredential())
+      .then(() =>
+        this.props.db.collection('notify').insertOne(notificationDocument)
+      )
+      .then(() => {
+        this.onSetNotificationSuccess();
+      })
+      .catch(err => {
+        this.onSetNotificationError(err);
+      });
+  }
+
+  onSetNotificationSuccess() {
+    this.setState({ setNotificationError: null });
+  }
+
+  onSetNotificationError(err) {
+    this.setState({ setNotificationError: err });
   }
 
   render() {
@@ -121,15 +136,20 @@ export default class AddToCart extends Component {
       return (
         <React.Fragment>
           <p className="red-text">Sorry, this product is out of stock</p>
-          {/* <button
-            className="btn btn-primary"
-            type="submit"
-            onClick={() => this.setNotification()}
-          >
-            Notify me <br />
-            when in stock
-            <span className="glyphicon glyphicon-bell" />
-          </button> */}
+          <UserContext.Consumer>
+            {profile => (
+              <NotifyMeButton
+                handleSetNotification={this.handleSetNotification}
+                profile={profile}
+                errorStatus={this.state.setNotificationError}
+              />
+            )}
+          </UserContext.Consumer>
+          <Error
+            message={'Error while setting notification!'}
+            error={this.state.setNotificationError}
+            display={'small'}
+          />
         </React.Fragment>
       );
     }
