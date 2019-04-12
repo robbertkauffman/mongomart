@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-export default function Category(props) {
+const Category = props => {
   const category = props.category;
 
   if (!category) {
@@ -20,4 +20,6 @@ export default function Category(props) {
       {category._id}
     </NavLink>
   );
-}
+};
+
+export default Category;
