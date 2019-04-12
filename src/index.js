@@ -22,12 +22,12 @@ export default class Routing extends Component {
       ),
       homeUrl: '/'
     };
-    this.homeCallback = this.homeCallback.bind(this);
+    this.generateHomeUrl = this.generateHomeUrl.bind(this);
   }
 
   componentDidMount() {}
 
-  homeCallback(node) {
+  generateHomeUrl(node) {
     // define home URL which is used by login redirect
     if (node) {
       this.setState({ homeUrl: node.getAttribute('href') });
@@ -62,7 +62,7 @@ export default class Routing extends Component {
                 <Link
                   className="navbar-brand"
                   to="/"
-                  innerRef={this.homeCallback}
+                  innerRef={this.generateHomeUrl}
                 >
                   MongoMart
                 </Link>
