@@ -34,10 +34,6 @@ export default class Routing extends Component {
     }
   }
 
-  handleAuthenticateClient(clientAuthenticated) {
-    this.setState({ clientAuthenticated: clientAuthenticated });
-  }
-
   render() {
     return (
       <Router basename={process.env.PUBLIC_URL}>
