@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { AnonymousCredential } from 'mongodb-stitch-browser-sdk';
+import { RemoteMongoClient } from 'mongodb-stitch-browser-sdk';
 import queryString from 'query-string';
 
 import Category from './Category';
@@ -11,6 +11,9 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      db: this.props.client
+        .getServiceClient(RemoteMongoClient.factory, 'mm-products')
+        .db('mongomart'),
       categories: [],
       categoriesError: undefined,
       items: [],
@@ -30,10 +33,9 @@ class Home extends Component {
   }
 
   fetchCategories() {
-    this.props.client.auth
-      .loginWithCredential(new AnonymousCredential())
+    this.props.clientAuthenticated
       .then(() =>
-        this.props.db
+        this.state.db
           .collection('item')
           .aggregate([
             {
@@ -70,10 +72,9 @@ class Home extends Component {
     const query = category && category !== 'All' ? { category: category } : {};
     const options = { sort: { _id: 1 } };
 
-    this.props.client.auth
-      .loginWithCredential(new AnonymousCredential())
+    this.props.clientAuthenticated
       .then(() =>
-        this.props.db
+        this.state.db
           .collection('item')
           .find(query, options)
           .asArray()

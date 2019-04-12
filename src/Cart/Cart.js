@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { AnonymousCredential } from 'mongodb-stitch-browser-sdk';
+import { RemoteMongoClient } from 'mongodb-stitch-browser-sdk';
 
 import CartItem from './CartItem';
 import Error from '../Error';
@@ -9,9 +9,10 @@ class Cart extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      cart: {
-        items: []
-      },
+      db: this.props.client
+        .getServiceClient(RemoteMongoClient.factory, 'mm-users')
+        .db('mongomart'),
+      cart: [],
       cartError: undefined,
       updateQuantityError: undefined
     };
@@ -19,18 +20,17 @@ class Cart extends Component {
   }
 
   componentDidMount() {
-    this.props.client.auth
-      .loginWithCredential(new AnonymousCredential())
+    this.props.clientAuthenticated
       .then(() =>
-        this.props.db
-          .collection('cart')
-          .find({ userid: this.props.client.auth.currentUser.id })
+        this.state.db
+          .collection('users')
+          .find({ _id: this.props.client.auth.currentUser.id })
           .first()
       )
-      .then(cart => {
-        if (cart && cart.items) {
+      .then(user => {
+        if (user && user.cart) {
           this.setState({
-            cart: cart,
+            cart: user.cart,
             cartError: null
           });
         }
@@ -55,14 +55,13 @@ class Cart extends Component {
   }
 
   removeCartItem(itemId) {
-    this.props.client.auth
-      .loginWithCredential(new AnonymousCredential())
+    this.props.clientAuthenticated
       .then(() =>
-        this.props.db.collection('cart').updateOne(
+        this.state.db.collection('users').updateOne(
           {
-            userid: this.props.client.auth.currentUser.id
+            _id: this.props.client.auth.currentUser.id
           },
-          { $pull: { items: { _id: itemId } } }
+          { $pull: { cart: { _id: itemId } } }
         )
       )
       .then(response => {
@@ -71,10 +70,8 @@ class Cart extends Component {
           response.modifiedCount &&
           response.modifiedCount === 1
         ) {
-          const updatedCart = this.state.cart;
-          updatedCart.items = updatedCart.items.filter(
-            item => item._id !== itemId
-          );
+          let updatedCart = this.state.cart;
+          updatedCart = updatedCart.filter(item => item._id !== itemId);
           this.setState({
             cart: updatedCart,
             updateQuantityError: undefined
@@ -88,15 +85,14 @@ class Cart extends Component {
   }
 
   updateCartQuantity(itemId, newQuantity) {
-    this.props.client.auth
-      .loginWithCredential(new AnonymousCredential())
+    this.props.clientAuthenticated
       .then(() =>
-        this.props.db.collection('cart').updateOne(
+        this.state.db.collection('users').updateOne(
           {
-            userid: this.props.client.auth.currentUser.id,
-            'items._id': itemId
+            _id: this.props.client.auth.currentUser.id,
+            'cart._id': itemId
           },
-          { $set: { 'items.$.quantity': newQuantity } }
+          { $set: { 'cart.$.quantity': newQuantity } }
         )
       )
       .then(response => {
@@ -106,7 +102,7 @@ class Cart extends Component {
           response.modifiedCount === 1
         ) {
           const updatedCart = this.state.cart;
-          updatedCart.items.forEach(item => {
+          updatedCart.forEach(item => {
             if (item._id === itemId) {
               item.quantity = newQuantity;
             }
@@ -125,10 +121,9 @@ class Cart extends Component {
   }
 
   renderCart() {
-    return this.state.cart.items.map(item => (
+    return this.state.cart.map(item => (
       <CartItem
         item={item}
-        userid={this.state.userid}
         updateQuantity={e => this.updateQuantity(item._id, e)}
         key={item._id}
       />
@@ -136,7 +131,7 @@ class Cart extends Component {
   }
 
   calculateTotal() {
-    return this.state.cart.items.reduce(
+    return this.state.cart.reduce(
       (a, b) => a + (b['price'] * b['quantity'] || 0),
       0
     );

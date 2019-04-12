@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import {
-  AnonymousCredential,
-  RemoteMongoClient
-} from 'mongodb-stitch-browser-sdk';
+import { RemoteMongoClient } from 'mongodb-stitch-browser-sdk';
 
 import Error from '../Error';
 
@@ -38,22 +35,18 @@ export default class AddReview extends Component {
     const review = {
       userid: this.props.client.auth.currentUser.id,
       productId: this.props.productId,
-      // name: this.props.client.auth.currentUser.name
-      // ? this.props.client.auth.currentUser.name
-      // : 'Anonymous User',
       name: this.state.name,
       comment: this.state.comment,
       stars: this.state.rating,
       date: new Date().getTime()
     };
 
-    const reviewsDb = this.props.client
+    const db = this.props.client
       .getServiceClient(RemoteMongoClient.factory, 'mm-reviews')
       .db('mongomart');
-    this.props.client.auth
-      .loginWithCredential(new AnonymousCredential())
-      .then(() => reviewsDb.collection('reviews').insertOne(review))
-      .then(response => {
+    this.props.clientAuthenticated
+      .then(() => db.collection('reviews').insertOne(review))
+      .then(() => {
         this.setState({ addReviewError: null, isWritingReview: false });
         this.props.onAddReview(review);
         this.disableAddReviewButton();

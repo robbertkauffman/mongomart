@@ -1,46 +1,44 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import { Stitch, RemoteMongoClient } from 'mongodb-stitch-browser-sdk';
+import { Stitch, AnonymousCredential } from 'mongodb-stitch-browser-sdk';
 
 import Cart from './Cart/Cart';
 import Home from './Home';
 import Login from './Login';
 import ProductItemDetail from './ProductDetail/ProductItemDetail';
-import UserContext from './UserContext';
 
 export default class Routing extends Component {
   constructor(props) {
     // replace Stitch App ID in the next line
     const stitchAppId = 'mongomart-vyoeg';
+    const client = Stitch.initializeDefaultAppClient(stitchAppId);
 
     super(props);
     this.state = {
-      client: Stitch.initializeDefaultAppClient(stitchAppId),
-      homeUrl: '/',
-      userProfile: {}
+      client: client,
+      clientAuthenticated: client.auth.loginWithCredential(
+        new AnonymousCredential()
+      ),
+      homeUrl: '/'
     };
     this.homeCallback = this.homeCallback.bind(this);
-    this.handleUpdateProfile = this.handleUpdateProfile.bind(this);
   }
 
   componentDidMount() {}
 
-  homeCallback(node, homeUrl) {
+  homeCallback(node) {
     // define home URL which is used by login redirect
-    this.setState({ homeUrl: node.getAttribute('href') });
+    if (node) {
+      this.setState({ homeUrl: node.getAttribute('href') });
+    }
   }
 
-  handleUpdateProfile(profile) {
-    // user profile is updated when logging in and shared through UserContext
-    this.setState({ userProfile: profile });
+  handleAuthenticateClient(clientAuthenticated) {
+    this.setState({ clientAuthenticated: clientAuthenticated });
   }
 
   render() {
-    const db = this.state.client
-      .getServiceClient(RemoteMongoClient.factory, 'mm-products')
-      .db('mongomart');
-
     return (
       <Router basename={process.env.PUBLIC_URL}>
         <React.Fragment>
@@ -76,8 +74,8 @@ export default class Routing extends Component {
                 <ul className="nav navbar-nav">
                   <Login
                     client={this.state.client}
+                    clientAuthenticated={this.state.clientAuthenticated}
                     homeUrl={this.state.homeUrl}
-                    handleUpdateProfile={this.handleUpdateProfile}
                   />
                 </ul>
                 <div className="collapse navbar-collapse">
@@ -112,37 +110,47 @@ export default class Routing extends Component {
             </div>
           </nav>
           <div className="container">
-            <UserContext.Provider value={this.state.userProfile}>
-              <Route
-                exact
-                path="/"
-                render={props => (
-                  <Home {...props} client={this.state.client} db={db} />
-                )}
-              />
-              <Route
-                path="/category/:category"
-                render={props => (
-                  <Home {...props} client={this.state.client} db={db} />
-                )}
-              />
-              <Route
-                path="/cart"
-                render={props => (
-                  <Cart {...props} client={this.state.client} db={db} />
-                )}
-              />
-              <Route
-                path="/item/:id"
-                render={props => (
-                  <ProductItemDetail
-                    {...props}
-                    client={this.state.client}
-                    db={db}
-                  />
-                )}
-              />
-            </UserContext.Provider>
+            <Route
+              exact
+              path="/"
+              render={props => (
+                <Home
+                  {...props}
+                  client={this.state.client}
+                  clientAuthenticated={this.state.clientAuthenticated}
+                />
+              )}
+            />
+            <Route
+              path="/category/:category"
+              render={props => (
+                <Home
+                  {...props}
+                  client={this.state.client}
+                  clientAuthenticated={this.state.clientAuthenticated}
+                />
+              )}
+            />
+            <Route
+              path="/cart"
+              render={props => (
+                <Cart
+                  {...props}
+                  client={this.state.client}
+                  clientAuthenticated={this.state.clientAuthenticated}
+                />
+              )}
+            />
+            <Route
+              path="/item/:id"
+              render={props => (
+                <ProductItemDetail
+                  {...props}
+                  client={this.state.client}
+                  clientAuthenticated={this.state.clientAuthenticated}
+                />
+              )}
+            />
           </div>
         </React.Fragment>
       </Router>

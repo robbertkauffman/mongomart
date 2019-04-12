@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { GoogleRedirectCredential } from 'mongodb-stitch-browser-sdk';
+import {
+  AnonymousCredential,
+  GoogleRedirectCredential
+} from 'mongodb-stitch-browser-sdk';
 
 export default class Login extends Component {
   constructor(props) {
@@ -21,10 +24,6 @@ export default class Login extends Component {
             isLoggedIn: true,
             userName: user.profile.name
           });
-          // add ID to profile for when creating notifications
-          const profile = user.profile;
-          profile.id = user.id;
-          this.props.handleUpdateProfile(profile);
         }
       });
     }
@@ -43,15 +42,16 @@ export default class Login extends Component {
   logout(e) {
     e.preventDefault();
     if (this.state.isLoggedIn) {
-      this.props.client.auth.logout().then(response => {
-        if (response) {
-          this.setState({
-            isLoggedIn: false,
-            userName: undefined
-          });
-          this.props.handleUpdateProfile({});
-        }
-      });
+      this.props.client.auth
+        .loginWithCredential(new AnonymousCredential())
+        .then(response => {
+          if (response) {
+            this.setState({
+              isLoggedIn: false,
+              userName: undefined
+            });
+          }
+        });
     }
   }
 

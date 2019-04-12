@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { AnonymousCredential } from 'mongodb-stitch-browser-sdk';
+import { RemoteMongoClient } from 'mongodb-stitch-browser-sdk';
 
 import Error from '../Error';
 import NotifyMeButton from './NotifyMeButton';
-import UserContext from '../UserContext';
 
 export default class AddToCart extends Component {
   constructor(props) {
@@ -26,22 +25,24 @@ export default class AddToCart extends Component {
     // first try to increment quantity of item in cart,
     // if fails, add item to cart or create cart (upsert)
     let incQuery = {
-      userid: this.props.client.auth.currentUser.id,
-      'items._id': this.props.item._id
+      _id: this.props.client.auth.currentUser.id,
+      'cart._id': this.props.item._id
     };
-    const incUpdate = { $inc: { 'items.$.quantity': 1 } };
+    const incUpdate = { $inc: { 'cart.$.quantity': 1 } };
 
-    this.props.client.auth
-      .loginWithCredential(new AnonymousCredential())
-      .then(() =>
+    const db = this.props.client
+      .getServiceClient(RemoteMongoClient.factory, 'mm-users')
+      .db('mongomart');
+    this.props.clientAuthenticated
+      .then(() => {
         // increment quantity by one
-        this.props.db.collection('cart').updateOne(incQuery, incUpdate)
-      )
+        db.collection('users').updateOne(incQuery, incUpdate);
+      })
       .then(response => {
-        if (response && response.modifiedCount !== 1) {
+        if ((response && response.modifiedCount !== 1) || !response) {
           // if not incremented,
           // either add item to cart or create new cart (upsert)
-          this.createCartOrCartItem();
+          this.createCartOrCartItem(db);
         } else {
           this.onAddToCartSuccess();
         }
@@ -51,17 +52,24 @@ export default class AddToCart extends Component {
       });
   }
 
-  createCartOrCartItem() {
-    let addQuery = { userid: this.props.client.auth.currentUser.id };
+  createCartOrCartItem(db) {
+    let addQuery = { _id: this.props.client.auth.currentUser.id };
+    // add flag for anonymous users so they can be cleaned up easily if needed
+    if (
+      this.props.client.auth.currentUser.loggedInProviderName === 'anon-user'
+    ) {
+      addQuery.anonymousUser = true;
+    }
+
     let addItem = this.props.item;
     addItem.quantity = 1;
-    const addUpdate = { $addToSet: { items: addItem } };
+    const addUpdate = { $addToSet: { cart: addItem } };
+
     const options = { upsert: true };
 
-    this.props.client.auth
-      .loginWithCredential(new AnonymousCredential())
+    this.props.clientAuthenticated
       .then(() =>
-        this.props.db.collection('cart').updateOne(addQuery, addUpdate, options)
+        db.collection('users').updateOne(addQuery, addUpdate, options)
       )
       .then(() => {
         this.onAddToCartSuccess();
@@ -83,18 +91,18 @@ export default class AddToCart extends Component {
     this.setState({ addToCartError: err });
   }
 
-  handleSetNotification(profile) {
-    console.log(profile);
+  handleSetNotification() {
     const notificationDocument = {
       itemId: this.props.item._id,
-      userid: profile.id,
-      email: profile.email
+      userid: this.props.client.auth.currentUser.id,
+      email: this.props.client.auth.currentUser.email
     };
-    this.props.client.auth
-      .loginWithCredential(new AnonymousCredential())
-      .then(() =>
-        this.props.db.collection('notify').insertOne(notificationDocument)
-      )
+
+    const db = this.props.client
+      .getServiceClient(RemoteMongoClient.factory, 'mm-products')
+      .db('mongomart');
+    this.props.clientAuthenticated
+      .then(() => db.collection('notify').insertOne(notificationDocument))
       .then(() => {
         this.onSetNotificationSuccess();
       })
@@ -136,15 +144,11 @@ export default class AddToCart extends Component {
       return (
         <React.Fragment>
           <p className="red-text">Sorry, this product is out of stock</p>
-          <UserContext.Consumer>
-            {profile => (
-              <NotifyMeButton
-                handleSetNotification={this.handleSetNotification}
-                profile={profile}
-                errorStatus={this.state.setNotificationError}
-              />
-            )}
-          </UserContext.Consumer>
+          <NotifyMeButton
+            handleSetNotification={this.handleSetNotification}
+            errorStatus={this.state.setNotificationError}
+            client={this.props.client}
+          />
           <Error
             message={'Error while setting notification!'}
             error={this.state.setNotificationError}

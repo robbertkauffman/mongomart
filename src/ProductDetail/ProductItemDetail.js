@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import {
-  AnonymousCredential,
-  RemoteMongoClient
-} from 'mongodb-stitch-browser-sdk';
+import { RemoteMongoClient } from 'mongodb-stitch-browser-sdk';
 
 import Error from '../Error';
 import AddToCart from './AddToCart';
@@ -31,10 +28,13 @@ export default class ProductItemDetail extends Component {
   fetchProduct() {
     const itemId = parseInt(this.props.match.params.id);
 
-    this.props.client.auth
-      .loginWithCredential(new AnonymousCredential())
+    const db = this.props.client
+      .getServiceClient(RemoteMongoClient.factory, 'mm-products')
+      .db('mongomart');
+
+    this.props.clientAuthenticated
       .then(() =>
-        this.props.db
+        db
           .collection('item')
           .find({ _id: itemId }, { limit: 1 })
           .asArray()
@@ -58,13 +58,13 @@ export default class ProductItemDetail extends Component {
   fetchReviews() {
     const itemId = parseInt(this.props.match.params.id);
 
-    const reviewsDb = this.props.client
+    const db = this.props.client
       .getServiceClient(RemoteMongoClient.factory, 'mm-reviews')
       .db('mongomart');
-    this.props.client.auth
-      .loginWithCredential(new AnonymousCredential())
+
+    this.props.clientAuthenticated
       .then(() =>
-        reviewsDb
+        db
           .collection('reviews')
           .find({ productId: itemId })
           .asArray()
@@ -167,11 +167,10 @@ export default class ProductItemDetail extends Component {
               </div>
 
               <p>{item.description}</p>
-
               <AddToCart
                 item={item}
-                db={this.props.db}
                 client={this.props.client}
+                clientAuthenticated={this.props.clientAuthenticated}
               />
             </div>
           </div>
@@ -201,6 +200,7 @@ export default class ProductItemDetail extends Component {
             />
             <AddReview
               client={this.props.client}
+              clientAuthenticated={this.props.clientAuthenticated}
               productId={this.state.item._id}
               onAddReview={this.handleAddReview}
             />
