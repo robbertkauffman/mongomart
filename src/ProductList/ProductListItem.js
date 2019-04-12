@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default function ProductItem(props) {
+const ProductItem = props => {
   const item = props.item;
 
   if (!item) {
@@ -36,4 +36,6 @@ export default function ProductItem(props) {
       <hr />
     </React.Fragment>
   );
-}
+};
+
+export default ProductItem;
