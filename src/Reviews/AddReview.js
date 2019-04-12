@@ -38,7 +38,7 @@ export default class AddReview extends Component {
     const name =
       currentUser.loggedInProviderName === 'anon-user'
         ? this.state.name
-        : currentUser.name;
+        : currentUser.profile.name;
 
     const review = {
       userid: currentUser.id,
