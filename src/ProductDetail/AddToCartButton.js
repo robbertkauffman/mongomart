@@ -16,7 +16,6 @@ const AddToCartButton = props => {
     return (
       <button className="btn btn-primary success" type="submit" disabled>
         Added item to cart
-        <span className="glyphicon glyphicon-chevron-right" />
       </button>
     );
   }

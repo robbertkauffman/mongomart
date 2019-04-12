@@ -26,7 +26,6 @@ const NotifyMeButton = props => {
     return (
       <button className="btn btn-primary success" type="submit" disabled>
         Added notification&nbsp;
-        <span className="glyphicon glyphicon-bell" />
       </button>
     );
   }
