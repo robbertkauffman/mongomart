@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { RemoteMongoClient } from 'mongodb-stitch-browser-sdk';
 
+import AddToCartButton from './AddToCartButton';
 import Error from '../Error';
 import NotifyMeButton from './NotifyMeButton';
 
@@ -9,15 +10,16 @@ export default class AddToCart extends Component {
     super(props);
     this.state = {
       addToCartError: undefined,
+      isAddedToCart: false,
       setNotificationError: undefined
     };
-    this.addToCart = this.addToCart.bind(this);
+    this.handleAddToCart = this.handleAddToCart.bind(this);
     this.handleSetNotification = this.handleSetNotification.bind(this);
   }
 
   componentDidMount() {}
 
-  addToCart() {
+  handleAddToCart() {
     this.incrementProductQuantity();
   }
 
@@ -80,11 +82,7 @@ export default class AddToCart extends Component {
   }
 
   onAddToCartSuccess() {
-    this.setState({ addToCartError: null });
-    this.refs.addToCartButton.setAttribute('disabled', '');
-    this.refs.addToCartButton.textContent = 'Added item to cart';
-    this.refs.addToCartButton.className =
-      this.refs.addToCartButton.className + ' success';
+    this.setState({ addToCartError: null, isAddedToCart: true });
   }
 
   onAddToCartError(err) {
@@ -124,15 +122,10 @@ export default class AddToCart extends Component {
     if (item.stock > 0) {
       return (
         <React.Fragment>
-          <button
-            className="btn btn-primary"
-            type="submit"
-            ref="addToCartButton"
-            onClick={this.addToCart}
-          >
-            Add to cart
-            <span className="glyphicon glyphicon-chevron-right" />
-          </button>
+          <AddToCartButton
+            onAddToCart={this.handleAddToCart}
+            isAddedToCart={this.state.isAddedToCart}
+          />
           <Error
             message={'Error while adding to cart!'}
             error={this.state.addToCartError}
