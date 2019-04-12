@@ -4,18 +4,18 @@ const NotifyMeButton = props => {
   if (props.client.auth.currentUser.loggedInProviderName === 'anon-user') {
     return (
       <p>
-        Please login to create a notification for when the product comes back in
+        Please login if you want to be notified when the product comes back in
         stock.
       </p>
     );
   }
 
-  if (!props.errorStatus) {
+  if (!props.isNotificationCreated) {
     return (
       <button
         className="btn btn-primary"
         type="submit"
-        onClick={() => props.handleSetNotification()}
+        onClick={() => props.onSetNotification()}
       >
         Notify me <br />
         when in stock&nbsp;
@@ -25,7 +25,7 @@ const NotifyMeButton = props => {
   } else {
     return (
       <button className="btn btn-primary success" type="submit" disabled>
-        Added notification
+        Added notification&nbsp;
         <span className="glyphicon glyphicon-bell" />
       </button>
     );

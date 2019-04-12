@@ -11,6 +11,7 @@ export default class AddToCart extends Component {
     this.state = {
       addToCartError: undefined,
       isAddedToCart: false,
+      isNotificationCreated: false,
       setNotificationError: undefined
     };
     this.handleAddToCart = this.handleAddToCart.bind(this);
@@ -86,23 +87,20 @@ export default class AddToCart extends Component {
   }
 
   onAddToCartError(err) {
+    console.log(err);
     this.setState({ addToCartError: err });
   }
 
   handleSetNotification() {
-    const notificationDocument = {
-      itemId: this.props.item._id,
-      userid: this.props.client.auth.currentUser.id,
-      email: this.props.client.auth.currentUser.email
-    };
-
-    const db = this.props.client
-      .getServiceClient(RemoteMongoClient.factory, 'mm-products')
-      .db('mongomart');
-    this.props.clientAuthenticated
-      .then(() => db.collection('notify').insertOne(notificationDocument))
-      .then(() => {
-        this.onSetNotificationSuccess();
+    const args = [this.props.item._id, this.props.client.auth.currentUser.id];
+    this.props.client
+      .callFunction('setNotification', args)
+      .then(result => {
+        if (result) {
+          this.onSetNotificationSuccess();
+        } else {
+          this.onSetNotificationError();
+        }
       })
       .catch(err => {
         this.onSetNotificationError(err);
@@ -110,10 +108,11 @@ export default class AddToCart extends Component {
   }
 
   onSetNotificationSuccess() {
-    this.setState({ setNotificationError: null });
+    this.setState({ setNotificationError: null, isNotificationCreated: true });
   }
 
   onSetNotificationError(err) {
+    console.log(err);
     this.setState({ setNotificationError: err });
   }
 
@@ -138,8 +137,8 @@ export default class AddToCart extends Component {
         <React.Fragment>
           <p className="red-text">Sorry, this product is out of stock</p>
           <NotifyMeButton
-            handleSetNotification={this.handleSetNotification}
-            errorStatus={this.state.setNotificationError}
+            onSetNotification={this.handleSetNotification}
+            isNotificationCreated={this.state.isNotificationCreated}
             client={this.props.client}
           />
           <Error
