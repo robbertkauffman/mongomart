@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { RemoteMongoClient } from 'mongodb-stitch-browser-sdk';
 
 import Error from '../Error';
+import AddReviewButton from './AddReviewButton';
 
 export default class AddReview extends Component {
   constructor(props) {
@@ -10,13 +11,14 @@ export default class AddReview extends Component {
       rating: 5,
       name: '',
       comment: '',
-      addReviewError: undefined
+      addReviewError: undefined,
+      isAddedReview: false
     };
 
     this.handleRatingChange = this.handleRatingChange.bind(this);
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleCommentChange = this.handleCommentChange.bind(this);
-    this.addReview = this.addReview.bind(this);
+    this.handleAddReview = this.handleAddReview.bind(this);
   }
 
   handleRatingChange(event) {
@@ -31,11 +33,17 @@ export default class AddReview extends Component {
     this.setState({ comment: event.target.value });
   }
 
-  addReview() {
+  handleAddReview() {
+    const currentUser = this.props.client.auth.currentUser;
+    const name =
+      currentUser.loggedInProviderName === 'anon-user'
+        ? this.state.name
+        : currentUser.name;
+
     const review = {
-      userid: this.props.client.auth.currentUser.id,
+      userid: currentUser.id,
       productId: this.props.productId,
-      name: this.state.name,
+      name: name,
       comment: this.state.comment,
       stars: this.state.rating,
       date: new Date().getTime()
@@ -47,9 +55,8 @@ export default class AddReview extends Component {
     this.props.clientAuthenticated
       .then(() => db.collection('reviews').insertOne(review))
       .then(() => {
-        this.setState({ addReviewError: null, isWritingReview: false });
+        this.setState({ addReviewError: null, isAddedReview: true });
         this.props.onAddReview(review);
-        this.disableAddReviewButton();
       })
       .catch(err => {
         this.setState({ addReviewError: err });
@@ -57,14 +64,9 @@ export default class AddReview extends Component {
       });
   }
 
-  disableAddReviewButton() {
-    this.refs.addReviewButton.setAttribute('disabled', '');
-    this.refs.addReviewButton.textContent = 'Added review';
-    this.refs.addReviewButton.className =
-      this.refs.addReviewButton.className + ' success';
-  }
-
   render() {
+    const isAnonymousUser =
+      this.props.client.auth.currentUser.loggedInProviderName === 'anon-user';
     return (
       <div className="well add-review">
         <h4>Add a Review:</h4>
@@ -81,20 +83,22 @@ export default class AddReview extends Component {
             />
           </label>
         </div>
-        <div className="form-group">
-          <label>
-            Name:
-            <input
-              type="text"
-              className="form-control"
-              id="name"
-              name="name"
-              placeholder="Enter display name"
-              value={this.state.name}
-              onChange={this.handleNameChange}
-            />
-          </label>
-        </div>
+        {isAnonymousUser && (
+          <div className="form-group">
+            <label>
+              Name:
+              <input
+                type="text"
+                className="form-control"
+                id="name"
+                name="name"
+                placeholder="Enter display name"
+                value={this.state.name}
+                onChange={this.handleNameChange}
+              />
+            </label>
+          </div>
+        )}
         <div className="form-group">
           <label className="radio-inline">
             <input
@@ -148,14 +152,10 @@ export default class AddReview extends Component {
             5 star
           </label>
         </div>
-        <button
-          type="submit"
-          className="btn btn-primary"
-          ref="addReviewButton"
-          onClick={this.addReview}
-        >
-          Submit Review
-        </button>
+        <AddReviewButton
+          onAddReview={this.handleAddReview}
+          isAddedReview={this.state.isAddedReview}
+        />
         {this.state.addReviewError && (
           <Error
             message={'Error while adding review!'}
