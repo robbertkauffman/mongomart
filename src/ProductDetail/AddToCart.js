@@ -10,6 +10,9 @@ export default class AddToCart extends Component {
     super(props);
     this.state = {
       addToCartError: undefined,
+      db: this.props.client
+        .getServiceClient(RemoteMongoClient.factory, 'mm-users')
+        .db('mongomart'),
       isAddedToCart: false,
       isNotificationCreated: false,
       setNotificationError: undefined
@@ -33,19 +36,16 @@ export default class AddToCart extends Component {
     };
     const incUpdate = { $inc: { 'cart.$.quantity': 1 } };
 
-    const db = this.props.client
-      .getServiceClient(RemoteMongoClient.factory, 'mm-users')
-      .db('mongomart');
     this.props.clientAuthenticated
-      .then(() => {
+      .then(() =>
         // increment quantity by one
-        db.collection('users').updateOne(incQuery, incUpdate);
-      })
+        this.state.db.collection('users').updateOne(incQuery, incUpdate)
+      )
       .then(response => {
-        if ((response && response.modifiedCount !== 1) || !response) {
+        if (response && response.modifiedCount !== 1) {
           // if not incremented,
           // either add item to cart or create new cart (upsert)
-          this.createCartOrCartItem(db);
+          this.createCartOrCartItem();
         } else {
           this.onAddToCartSuccess();
         }
@@ -55,7 +55,7 @@ export default class AddToCart extends Component {
       });
   }
 
-  createCartOrCartItem(db) {
+  createCartOrCartItem() {
     let addQuery = { _id: this.props.client.auth.currentUser.id };
     // add flag for anonymous users so they can be cleaned up easily if needed
     if (
@@ -72,7 +72,9 @@ export default class AddToCart extends Component {
 
     this.props.clientAuthenticated
       .then(() =>
-        db.collection('users').updateOne(addQuery, addUpdate, options)
+        this.state.db
+          .collection('users')
+          .updateOne(addQuery, addUpdate, options)
       )
       .then(() => {
         this.onAddToCartSuccess();
