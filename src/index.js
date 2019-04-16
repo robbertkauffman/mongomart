@@ -11,7 +11,7 @@ import ProductItemDetail from './ProductDetail/ProductItemDetail';
 export default class Routing extends Component {
   constructor(props) {
     // replace Stitch App ID in the next line
-    const stitchAppId = 'mongomart-vyoeg';
+    const stitchAppId = 'YOUR_STITCH_APP_ID';
     const client = Stitch.initializeDefaultAppClient(stitchAppId);
 
     super(props);
