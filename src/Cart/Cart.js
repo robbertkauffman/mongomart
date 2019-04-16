@@ -9,8 +9,11 @@ class Cart extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      db: this.props.client
-        .getServiceClient(RemoteMongoClient.factory, 'mm-users')
+      db: props.client
+        .getServiceClient(
+          RemoteMongoClient.factory,
+          props.stitchClusterNames.users
+        )
         .db('mongomart'),
       cart: [],
       cartError: undefined,

@@ -11,8 +11,11 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      db: this.props.client
-        .getServiceClient(RemoteMongoClient.factory, 'mm-products')
+      db: props.client
+        .getServiceClient(
+          RemoteMongoClient.factory,
+          props.stitchClusterNames.products
+        )
         .db('mongomart'),
       categories: [],
       categoriesError: undefined,

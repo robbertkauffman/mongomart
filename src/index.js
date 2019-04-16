@@ -10,18 +10,25 @@ import ProductItemDetail from './ProductDetail/ProductItemDetail';
 
 export default class Routing extends Component {
   constructor(props) {
+    super(props);
+
     // replace Stitch App ID in the next line
     const stitchAppId = 'YOUR_STITCH_APP_ID';
     const client = Stitch.initializeDefaultAppClient(stitchAppId);
 
-    super(props);
     this.state = {
+      stitchClusterNames: {
+        products: 'mongodb-atlas',
+        reviews: 'mongodb-atlas',
+        users: 'mongodb-atlas'
+      },
       client: client,
       clientAuthenticated: client.auth.loginWithCredential(
         new AnonymousCredential()
       ),
       homeUrl: '/'
     };
+
     this.generateHomeUrl = this.generateHomeUrl.bind(this);
   }
 
@@ -68,11 +75,7 @@ export default class Routing extends Component {
                 id="bs-example-navbar-collapse-1"
               >
                 <ul className="nav navbar-nav">
-                  <Login
-                    client={this.state.client}
-                    clientAuthenticated={this.state.clientAuthenticated}
-                    homeUrl={this.state.homeUrl}
-                  />
+                  <Login {...this.props} {...this.state} />
                 </ul>
                 <div className="collapse navbar-collapse">
                   <form
@@ -109,43 +112,19 @@ export default class Routing extends Component {
             <Route
               exact
               path="/"
-              render={props => (
-                <Home
-                  {...props}
-                  client={this.state.client}
-                  clientAuthenticated={this.state.clientAuthenticated}
-                />
-              )}
+              render={props => <Home {...props} {...this.state} />}
             />
             <Route
               path="/category/:category"
-              render={props => (
-                <Home
-                  {...props}
-                  client={this.state.client}
-                  clientAuthenticated={this.state.clientAuthenticated}
-                />
-              )}
+              render={props => <Home {...props} {...this.state} />}
             />
             <Route
               path="/cart"
-              render={props => (
-                <Cart
-                  {...props}
-                  client={this.state.client}
-                  clientAuthenticated={this.state.clientAuthenticated}
-                />
-              )}
+              render={props => <Cart {...props} {...this.state} />}
             />
             <Route
               path="/item/:id"
-              render={props => (
-                <ProductItemDetail
-                  {...props}
-                  client={this.state.client}
-                  clientAuthenticated={this.state.clientAuthenticated}
-                />
-              )}
+              render={props => <ProductItemDetail {...props} {...this.state} />}
             />
           </div>
         </React.Fragment>

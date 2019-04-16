@@ -29,7 +29,10 @@ export default class ProductItemDetail extends Component {
     const itemId = parseInt(this.props.match.params.id);
 
     const db = this.props.client
-      .getServiceClient(RemoteMongoClient.factory, 'mm-products')
+      .getServiceClient(
+        RemoteMongoClient.factory,
+        this.props.stitchClusterNames.products
+      )
       .db('mongomart');
 
     this.props.clientAuthenticated
@@ -59,7 +62,10 @@ export default class ProductItemDetail extends Component {
     const itemId = parseInt(this.props.match.params.id);
 
     const db = this.props.client
-      .getServiceClient(RemoteMongoClient.factory, 'mm-reviews')
+      .getServiceClient(
+        RemoteMongoClient.factory,
+        this.props.stitchClusterNames.reviews
+      )
       .db('mongomart');
 
     this.props.clientAuthenticated
@@ -167,11 +173,7 @@ export default class ProductItemDetail extends Component {
               </div>
 
               <p>{item.description}</p>
-              <AddToCart
-                item={item}
-                client={this.props.client}
-                clientAuthenticated={this.props.clientAuthenticated}
-              />
+              <AddToCart {...this.props} item={item} />
             </div>
           </div>
         </React.Fragment>
@@ -194,13 +196,9 @@ export default class ProductItemDetail extends Component {
             <h3 className="page-header">Latest Reviews</h3>
           </div>
           <div className="col-lg-12">
-            <ListReviews
-              client={this.props.client}
-              reviews={this.state.reviews}
-            />
+            <ListReviews {...this.props} reviews={this.state.reviews} />
             <AddReview
-              client={this.props.client}
-              clientAuthenticated={this.props.clientAuthenticated}
+              {...this.props}
               productId={this.state.item._id}
               onAddReview={this.handleAddReview}
             />

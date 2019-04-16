@@ -50,7 +50,10 @@ export default class AddReview extends Component {
     };
 
     const db = this.props.client
-      .getServiceClient(RemoteMongoClient.factory, 'mm-reviews')
+      .getServiceClient(
+        RemoteMongoClient.factory,
+        this.props.stitchClusterNames.reviews
+      )
       .db('mongomart');
     this.props.clientAuthenticated
       .then(() => db.collection('reviews').insertOne(review))

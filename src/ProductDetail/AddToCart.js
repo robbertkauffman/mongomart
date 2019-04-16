@@ -10,8 +10,11 @@ export default class AddToCart extends Component {
     super(props);
     this.state = {
       addToCartError: undefined,
-      db: this.props.client
-        .getServiceClient(RemoteMongoClient.factory, 'mm-users')
+      db: props.client
+        .getServiceClient(
+          RemoteMongoClient.factory,
+          props.stitchClusterNames.products
+        )
         .db('mongomart'),
       isAddedToCart: false,
       isNotificationCreated: false,

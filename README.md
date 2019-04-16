@@ -25,11 +25,14 @@ Once you have created the Stitch app, do the following:
     - As database name use *mongomart*, as collection name use *item*, and as template select *Users 
       can only read all data*. Click *Add Collection*.
   - Add another rule:
-    - As database name use *mongomart*, as collection name use *cart*, and as template select *Users 
-      can only read and write their own data*. Click *Add Collection*.
-  - Add one final rule:
     - As database name use *mongomart*, as collection name use *reviews*, and as template select 
-      *Users can read all data, but only write their own data*. Click *Add Collection*.
+      *Users can read all data, but only write their own data*. Enter *userid* as Field Name For User 
+      ID. Click *Add Collection*.
+  - Add one final rule:
+    - As database name use *mongomart* and as collection name use *users*. Please note that the 
+      *users* collection doesn't exist yet, so you will have to create it by typing its name and 
+      clicking on Create "users" or hitting Return. As template select *Users can only read and 
+      write their own data*. Enter *userid* as Field Name For User ID. Click *Add Collection*.
 
 Finally, copy the App ID that is displayed on the top left of the screen. This app ID needs to be 
 used by the front-end application in the next step.
@@ -39,7 +42,13 @@ used by the front-end application in the next step.
 The application is built using React. To install and run the application NPM or Yarn is required.
 
 First, update the Stitch App ID in the application by editing `src/index.js` and replacing 
-*YOUR_STITCH_APP_ID* on line 12 with your Stitch App ID.
+*YOUR_STITCH_APP_ID* on line 16 with your Stitch App ID.
+
+Then update the Stitch Service Names by editing the `stitchClusterNames` variable in the same file 
+on line 20-24. The service names are the names you have given to any linked clusters when creating 
+the Stitch app or when linking an Atlas Cluster to the app. Each of the three collections can be 
+hosted on a separate cluster or all on the same. In case of the latter you can use the same name 
+for each cluster.
 
 To install and run the application:
 
