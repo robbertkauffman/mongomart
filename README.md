@@ -32,7 +32,11 @@ Once you have created the Stitch app, do the following:
     - As database name use *mongomart* and as collection name use *users*. Please note that the 
       *users* collection doesn't exist yet, so you will have to create it by typing its name and 
       clicking on Create "users" or hitting Return. As template select *Users can only read and 
-      write their own data*. Enter *userid* as Field Name For User ID. Click *Add Collection*.
+      write their own data*. Enter *_id* as Field Name For User ID. Click *Add Collection*.
+      - For more fine-grained access controls, you can set write access on the *cart* field so that
+        users cannot update their username but can only update their cart. You can do this by 
+        clicking *Add Field* and enter *cart* as the fieldname. Then uncheck the box *All additional
+        fields* under the column *Write*.
 
 Finally, copy the App ID that is displayed on the top left of the screen. This app ID needs to be 
 used by the front-end application in the next step.

@@ -13,7 +13,7 @@ export default class AddToCart extends Component {
       db: props.client
         .getServiceClient(
           RemoteMongoClient.factory,
-          props.stitchClusterNames.products
+          props.stitchClusterNames.users
         )
         .db('mongomart'),
       isAddedToCart: false,
