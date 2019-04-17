@@ -75,5 +75,5 @@ $ npm run build
 Now go to Stitch Hosting and enable Stitch Hosting if you haven't done so yet. Then click on *Upload 
 Files* and upload all of the files of the *build* directory. You have to create all of the subfolders
 manually. Once you've finished uploading, go to the tab *Settings* and configure a *Custom 404 Page* 
-by clicking *Choose File*. Browse to the file *404.html* and click on *Select a File*. Any 404 pages
-will now use the 404.html file which contains a workaround to enable React Routing.
+by clicking *Choose File*. Browse to the file *404.html* and click on *Select a File* and hit *Save*. 
+Any 404 pages will now use the 404.html file which contains a workaround to enable React Routing.
