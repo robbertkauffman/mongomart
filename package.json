@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "jsonwebtoken": "^8.5.1",
     "mongodb-stitch-browser-sdk": "^4.2.0",
     "query-string": "^6.2.0",
     "react": "^16.8.1",

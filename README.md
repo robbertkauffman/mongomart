@@ -45,14 +45,18 @@ used by the front-end application in the next step.
 
 The application is built using React. To install and run the application NPM or Yarn is required.
 
-First, update the Stitch App ID in the application by editing `src/index.js` and replacing 
-*YOUR_STITCH_APP_ID* on line 16 with your Stitch App ID.
+First, update the Stitch App ID in the application by editing `src/config.js` and replacing 
+*YOUR_STITCH_APP_ID* on line 2 with your Stitch App ID.
 
 Then update the Stitch Service Names by editing the `stitchClusterNames` variable in the same file 
-on line 20-24. The service names are the names you have given to any linked clusters when creating 
+on line 6-10. The service names are the names you have given to any linked clusters when creating 
 the Stitch app or when linking an Atlas Cluster to the app. Each of the three collections can be 
 hosted on a separate cluster or all on the same. In case of the latter you can use the same name 
 for each cluster.
+
+Finally, change the name, email address and phone number for the user by editing the `jwtUser`
+variable on line 14-18. This information is used by some of the Stitch Triggers and Stitch 
+Functions that sent notifications over email and phone.
 
 To install and run the application:
 

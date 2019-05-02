@@ -1,30 +1,32 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import { Stitch, AnonymousCredential } from 'mongodb-stitch-browser-sdk';
+import { Stitch, CustomCredential } from 'mongodb-stitch-browser-sdk';
+import jwt from 'jsonwebtoken';
 
 import Cart from './Cart/Cart';
 import Home from './Home';
 import Login from './Login';
 import ProductItemDetail from './ProductDetail/ProductItemDetail';
 
+import { stitchAppId, stitchClusterNames, jwtUser } from './config';
+
 export default class Routing extends Component {
   constructor(props) {
     super(props);
 
-    // replace Stitch App ID in the next line
-    const stitchAppId = 'YOUR_STITCH_APP_ID';
     const client = Stitch.initializeDefaultAppClient(stitchAppId);
+    const jwtString = jwt.sign(
+      { sub: '1234567890', aud: 'mongomart', ...jwtUser },
+      'mongomartmongomartmongomartmongomart',
+      { expiresIn: '1y' }
+    );
 
     this.state = {
-      stitchClusterNames: {
-        products: 'mongodb-atlas',
-        reviews: 'mongodb-atlas',
-        users: 'mongodb-atlas'
-      },
+      stitchClusterNames: stitchClusterNames,
       client: client,
       clientAuthenticated: client.auth.loginWithCredential(
-        new AnonymousCredential()
+        new CustomCredential(jwtString)
       ),
       homeUrl: '/'
     };
