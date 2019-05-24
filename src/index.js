@@ -6,7 +6,6 @@ import jwt from 'jsonwebtoken';
 
 import Cart from './Cart/Cart';
 import Home from './Home';
-import Login from './Login';
 import ProductItemDetail from './ProductDetail/ProductItemDetail';
 
 import { stitchAppId, stitchClusterNames, jwtUser } from './config';
@@ -76,9 +75,6 @@ export default class Routing extends Component {
                 className="collapse navbar-collapse"
                 id="bs-example-navbar-collapse-1"
               >
-                <ul className="nav navbar-nav">
-                  <Login {...this.props} {...this.state} />
-                </ul>
                 <div className="collapse navbar-collapse">
                   <form
                     className="navbar-form navbar-right"
