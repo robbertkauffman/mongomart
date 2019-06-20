@@ -7,6 +7,7 @@ import AddToCart from './AddToCart';
 import ListReviews from '../Reviews/ListReviews';
 import AddReview from '../Reviews/AddReview';
 import ProductRating from '../ProductRating/ProductRating';
+import UpdateStockButton from './UpdateStockButton';
 
 export default class ProductItemDetail extends Component {
   constructor(props) {
@@ -133,6 +134,10 @@ export default class ProductItemDetail extends Component {
     const categoryLink = '/category/' + item.category;
     const img_url = process.env.PUBLIC_URL + item.img_url;
 
+    const doAfterUpdateStock = () => {
+      this.fetchProduct();
+    };
+
     if (!this.state.productError) {
       return (
         <React.Fragment>
@@ -174,6 +179,11 @@ export default class ProductItemDetail extends Component {
 
               <p>{item.description}</p>
               <AddToCart {...this.props} item={item} />
+              <UpdateStockButton
+                {...this.props}
+                doAfterUpdateStock={doAfterUpdateStock}
+                item={item}
+              />
             </div>
           </div>
         </React.Fragment>

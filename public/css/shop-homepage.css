@@ -114,3 +114,24 @@ img.product {
   max-height: 253px;
   margin: 0 auto;
 }
+
+.covert-button {
+  border: 0;
+  margin: 10px 0 0;
+  padding: 0;
+  background-color: transparent !important;
+  display: block;
+  color: white;
+}
+
+.covert-button:hover {
+  color: black;
+}
+
+.covert-button.success, .covert-button.success:hover {
+  color: green;
+}
+
+.covert-button.error, .covert-button.error:hover {
+  color: red;
+}
